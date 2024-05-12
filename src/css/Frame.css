@@ -1,0 +1,81 @@
+
+.green-frame {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 1000;
+	background-color: #5a854b;
+	display: flex;
+	justify-content: flex-end; 
+	padding-top: 0.2em;
+	padding-bottom: 0.2em;
+	-webkit-app-region: drag;
+	height: 40px;
+	justify-content: space-between; 
+	align-items: center; 
+}
+
+.title-left {
+	-webkit-app-region: drag; 
+	display: flex;
+	align-items: center;
+	color: white;
+	padding-left: 2em;
+}
+.title-left img {
+	-webkit-app-region: no-drag; 
+	display: flex;
+	align-items: center;
+	color: white;
+	padding-left: 1em;
+}
+
+.title-right {
+	-webkit-app-region: no-drag;
+	display: flex;
+	align-items: center;
+}
+
+.green-frame button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 0.2em;
+	border: none;
+	background-color: #5A854B;
+	color: white;
+	cursor: pointer;
+	width: 40px;
+	height: 40px;
+	-webkit-app-region: no-drag;
+}
+.green-frame button:hover {
+	background-color: #6a9b5b; 
+}
+.green-frame button:focus:not(:focus-visible) {
+	outline: none;
+}
+.green-frame button:focus-visible {
+	outline: none;
+}
+
+#title-btn-1 {
+	font-size: 15px;
+}
+#title-btn-2 {
+	font-size: 15px;
+}
+#title-btn-3 {
+	font-size: 15px;
+}
+
+.profile-circle {
+	width: 40px;
+	height: 40px;
+	background-color: #ccc;
+	border-radius: 50%;
+	margin-right: 10px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);  
+}
+  
