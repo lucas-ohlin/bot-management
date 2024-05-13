@@ -140,3 +140,27 @@
 .application-btn:hover {
   background-color: #5a854b;
 }
+
+.applications-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.applications-table th, .applications-table td {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid #ccc;
+}
+
+.manage-btn {
+  padding: 5px 10px;
+  background-color: #5a854b;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.manage-btn:hover {
+  background-color: #417b39;
+}

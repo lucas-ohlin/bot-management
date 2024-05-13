@@ -1,7 +1,8 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import fs from 'fs'; 
 
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -14,10 +15,32 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 
 
 let win: BrowserWindow | null;
 
+const DATA_FILE = path.join(app.getPath('userData'), './applications.json');
+function readApplications() {
+  try {
+    console.log(DATA_FILE);
+    const data = fs.readFileSync(DATA_FILE, 'utf-8');
+    return JSON.parse(data);
+  } catch (error) {
+    console.error('Failed to read data file:', error);
+    return []; 
+  }
+}
+
+function writeApplications(applications: any[]) {
+  try {
+    fs.writeFileSync(DATA_FILE, JSON.stringify(applications, null, 2), 'utf-8');
+  } catch (error) {
+    console.error('Failed to write data file:', error);
+  }
+}
+
 function createWindow() {
   win = new BrowserWindow({
     icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
     // frame: false,
+    minWidth: 700, 
+    minHeight: 500, 
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),
     },
@@ -66,4 +89,27 @@ ipcMain.on('window-maximize', () => {
 
 ipcMain.on('window-close', () => {
   win?.close();
+});
+
+ipcMain.on('open-folder-dialog', (event) => {
+  if (win) {
+    dialog.showOpenDialog(win, {
+      properties: ['openDirectory']
+    }).then(result => {
+      if (!result.canceled && result.filePaths.length > 0) {
+        console.log("Sending path to renderer:", result.filePaths[0]);
+        event.reply('selected-directory', result.filePaths[0]);
+      }
+    }).catch(err => {
+      console.error('Failed to open folder dialog:', err);
+    });
+  }
+});
+
+ipcMain.handle('read-applications', async (event) => {
+  return readApplications();
+});
+
+ipcMain.on('write-applications', (event, applications) => {
+  writeApplications(applications);
 });
