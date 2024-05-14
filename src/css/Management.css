@@ -1,0 +1,107 @@
+.bot-management-view {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #232323;
+  color: white;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+	margin-top: 40px;
+  /* margin-bottom: 20px; */
+}
+
+.close-btn {
+  font-size: 20px;
+	padding: 15px;
+  background: none;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-right: 10px;
+	margin-top: 6px;
+}
+
+.close-btn:hover {
+  background-color: #353535;
+}
+
+.bot-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.bot-name {
+  margin-bottom: 0;
+}
+
+.bot-path {
+  margin-top: 0;
+  color: gray;
+}
+
+.bot-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.action-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.stop-btn {
+  background-color: #ff4c4c;
+}
+
+.edit-code-btn {
+  background-color: #ff4c4c;
+}
+
+.invites-btn {
+  background-color: #ff4c4c;
+}
+
+.edit-bot-btn {
+  background-color: #ff4c4c;
+}
+
+.remove-bot-btn {
+  background-color: #ff4c4c;
+}
+
+.bot-logs {
+  display: flex;
+  margin-top: 20px;
+}
+
+.log-window {
+  flex: 1;
+  background-color: #333;
+  padding: 20px;
+  margin-right: 20px;
+  border-radius: 5px;
+}
+
+.bot-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.stat {
+  background-color: #333;
+  padding: 20px;
+  border-radius: 5px;
+}

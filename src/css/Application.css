@@ -1,0 +1,91 @@
+.applications-container {
+  background-color: #333333;
+  width: calc(100% - 2rem);
+  margin: 0 auto; 
+  padding-left: 1em;
+  padding-right: 1rem;
+  padding-bottom: 1rem;
+  padding-top: 0.5rem;
+  border-radius: 15px;
+}
+
+.applications-title {
+  display: flex;
+  justify-content: left;
+  color: #ffffff;
+  font-size: 19px;
+  margin: 0;
+  padding-top: 5px;
+  font-weight: 400;
+}
+
+.applications-divider {
+  height: 2px; 
+  background-color: #5a854b; 
+  margin: 8px 0;
+  margin-top: 4px; 
+}
+
+.applications-btn-container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+.application-btn {
+  background-color: #232323;
+  color: #ffffff;
+  border: none;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-bottom: 5px; 
+}
+
+.application-btn:hover {
+  background-color: #5a854b;
+}
+
+.applications-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.applications-table th, .applications-table td {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid #414141;
+}
+
+.manage-btn {
+  padding: 5px 10px;
+  background-color: #5a854b;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.manage-btn:hover {
+  background-color: #417b39;
+}
+
+.applications-table td[title] {
+	position: relative;
+	cursor: pointer;
+}
+
+.applications-table td[title]:hover::after {
+	content: attr(title);
+	position: absolute;
+	left: 0;
+	bottom: 100%;
+	background: #333;
+	color: #fff;
+	padding: 5px;
+	border-radius: 3px;
+	white-space: nowrap;
+	z-index: 1;
+	opacity: 0.9;
+	font-size: 12px;
+}

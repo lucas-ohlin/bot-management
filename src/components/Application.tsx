@@ -7,9 +7,14 @@ interface Application {
 
 interface ApplicationsContainerProps {
   applications: Application[];
+  onManage: (app: Application) => void;
 }
 
-const ApplicationsContainer: React.FC<ApplicationsContainerProps> = ({ applications }) => {
+const ApplicationsContainer: React.FC<ApplicationsContainerProps> = ({ applications, onManage }) => {
+  const truncateText = (text: string, maxLength: number): string => {
+    return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
+  };
+
   return (
     <div className="applications-container">
       <h2 className="applications-title">Applications</h2>
@@ -25,10 +30,18 @@ const ApplicationsContainer: React.FC<ApplicationsContainerProps> = ({ applicati
         <tbody>
           {applications.map((app, index) => (
             <tr key={index}>
-              <td>{app.name}</td>
-              <td>{app.path}</td>
+              <td title={app.name}>{truncateText(app.name, 20)}</td>
+              <td title={app.path}>{truncateText(app.path, 40)}</td>
               <td>
-                <button className="quick-action-btn">Manage</button>
+                <button
+                  className="developer-portal-btn"
+                  onClick={() => {
+                    console.log("Manage button clicked for app:", app);
+                    onManage(app);
+                  }}
+                >
+                  Manage
+                </button>
               </td>
             </tr>
           ))}
