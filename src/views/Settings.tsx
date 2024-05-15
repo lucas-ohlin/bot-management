@@ -21,6 +21,7 @@ const ideIcons = {
 const getIDEIcon = (idePath: string | null): { icon: any, name: string } => {
   if (!idePath) return { icon: null, name: '' };
 
+  // Love If statements !!
   const ide = idePath.toLowerCase();
   if (ide.includes('code.exe')) return { icon: ideIcons.vscode, name: 'Visual Studio Code' };
   if (ide.includes('devenv.exe')) return { icon: ideIcons.vscode, name: 'Visual Studio' };
