@@ -33,13 +33,11 @@ const ApplicationsContainer: React.FC<ApplicationsContainerProps> = ({ applicati
               <td title={app.name}>{truncateText(app.name, 20)}</td>
               <td title={app.path}>{truncateText(app.path, 40)}</td>
               <td>
-                <button
-                  className="developer-portal-btn"
+                <button className="developer-portal-btn"
                   onClick={() => {
                     console.log("Manage button clicked for app:", app);
                     onManage(app);
-                  }}
-                >
+                  }}>
                   Manage
                 </button>
               </td>

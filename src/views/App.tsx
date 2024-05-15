@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Frame from '../components/Frame';
-import Modal from '../components/Modal';
 import ApplicationsContainer from '../components/Application';
-import Management from './Management';
 import QuickActions from '../components/QuickActions';
+import Modal from '../components/Modal';
+import Management from './Management';
+import Settings from './Settings';
 
 import '../css/App.css';
 import '../css/Frame.css';
@@ -21,6 +22,7 @@ const App: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPath, setSelectedPath] = useState('');
   const [selectedBot, setSelectedBot] = useState<Application | null>(null);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const minimizeWindow = (): void => { window.ipcRenderer.send('window-minimize') };
   const maximizeWindow = (): void => { window.ipcRenderer.send('window-maximize') };
@@ -69,6 +71,14 @@ const App: React.FC = () => {
     setSelectedBot(null);
   };
 
+  const openSettings = () => {
+    setIsSettingsOpen(true);
+  };
+
+  const closeSettings = () => {
+    setIsSettingsOpen(false);
+  };
+
   return (
     <>
       <Frame minimizeWindow={minimizeWindow} maximizeWindow={maximizeWindow} closeWindow={closeWindow} />
@@ -79,9 +89,11 @@ const App: React.FC = () => {
           botPath={selectedBot.path}
           onClose={closeBotManagementView}
         />
+      ) : isSettingsOpen ? (
+        <Settings onClose={closeSettings} />
       ) : (
         <div className="body-container">
-          <QuickActions navigateTo={navigateTo} importBot={importBot} />
+          <QuickActions navigateTo={navigateTo} importBot={importBot} onSettingsClick={openSettings} />
           <ApplicationsContainer applications={applications} onManage={handleManage} />
         </div>
       )}

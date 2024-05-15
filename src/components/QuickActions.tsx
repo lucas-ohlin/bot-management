@@ -1,13 +1,15 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCog } from '@fortawesome/free-solid-svg-icons';
 import { faDiscord } from '@fortawesome/free-brands-svg-icons';
 
 interface QuickActionsProps {
   navigateTo: (url: string) => void;
   importBot: () => void;
+  onSettingsClick: () => void;
 }
 
-const QuickActions: React.FC<QuickActionsProps> = ({ navigateTo, importBot }) => {
+const QuickActions: React.FC<QuickActionsProps> = ({ navigateTo, importBot, onSettingsClick }) => {
   return (
     <div className="quick-actions-container">
       <h2 className="quick-actions-title">Quick Actions</h2>
@@ -21,8 +23,11 @@ const QuickActions: React.FC<QuickActionsProps> = ({ navigateTo, importBot }) =>
           <button className="quick-action-btn">Create Bot</button>
         </div>
         <div className="quick-actions-right">
-          <button className="developer-portal-btn" onClick={() => navigateTo('https://discord.gg/ybdyrPuEPR')}>
-            <FontAwesomeIcon icon={faDiscord} /> Discord
+          <button className="settings-btn" onClick={onSettingsClick}>
+            <FontAwesomeIcon icon={faCog} />
+          </button>
+          <button className="settings-btn" onClick={() => navigateTo('https://discord.gg/ybdyrPuEPR')}>
+            <FontAwesomeIcon icon={faDiscord} />
           </button>
         </div>
       </div>

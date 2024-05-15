@@ -1,4 +1,5 @@
 import { app, BrowserWindow, ipcMain, dialog } from 'electron';
+import { exec } from 'child_process'; 
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
@@ -16,6 +17,8 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 
 let win: BrowserWindow | null;
 
 const DATA_FILE = path.join(app.getPath('userData'), './applications.json');
+const SETTINGS_FILE = path.join(app.getPath('userData'), './settings.json');
+
 function readApplications() {
   try {
     console.log(DATA_FILE);
@@ -32,6 +35,25 @@ function writeApplications(applications: any[]) {
     fs.writeFileSync(DATA_FILE, JSON.stringify(applications, null, 2), 'utf-8');
   } catch (error) {
     console.error('Failed to write data file:', error);
+  }
+}
+
+function readSettings() {
+  try {
+    console.log(SETTINGS_FILE);
+    const data = fs.readFileSync(SETTINGS_FILE, 'utf-8');
+    return JSON.parse(data);
+  } catch (error) {
+    console.error('Failed to read settings file:', error);
+    return {}; 
+  }
+}
+
+function writeSettings(settings: any) {
+  try {
+    fs.writeFileSync(SETTINGS_FILE, JSON.stringify(settings, null, 2), 'utf-8');
+  } catch (error) {
+    console.error('Failed to write settings file:', error);
   }
 }
 
@@ -106,10 +128,33 @@ ipcMain.on('open-folder-dialog', (event) => {
   }
 });
 
-ipcMain.handle('read-applications', async (event) => {
+ipcMain.handle('read-applications', async () => {
   return readApplications();
 });
 
 ipcMain.on('write-applications', (event, applications) => {
   writeApplications(applications);
+});
+
+ipcMain.handle('open-file-dialog', async () => {
+  const result = await dialog.showOpenDialog({
+    properties: ['openFile']
+  });
+  return result.filePaths;
+});
+
+ipcMain.on('open-ide', (event, idePath, botPath) => {
+  exec(`"${idePath}" "${botPath}"`, (error) => {
+    if (error) {
+      console.error(`Error opening IDE: ${error.message}`);
+    }
+  });
+});
+
+ipcMain.handle('read-settings', async () => {
+  return readSettings();
+});
+
+ipcMain.on('write-settings', (event, settings) => {
+  writeSettings(settings);
 });
