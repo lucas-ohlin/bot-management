@@ -73,7 +73,7 @@ const Management: React.FC<ManagementProps> = ({ botName, botPath, onClose, onRe
   }, [botPath]);
 
   useEffect(() => {
-    const handleLog = (event: any, log: string) => {
+    const handleLog = (_event: any, log: string) => {
       setLogs(prevLogs => [...prevLogs, log]);
     };
 
