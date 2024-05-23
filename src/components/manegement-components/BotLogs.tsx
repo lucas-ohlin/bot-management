@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface BotLogsProps {
   logs: string[];
@@ -8,6 +8,7 @@ const BotLogs: React.FC<BotLogsProps> = ({ logs }) => {
   const [cpuUsage, setCpuUsage] = useState<number>(0);
   const [memoryUsage, setMemoryUsage] = useState<number>(0);
   const [uptime, setUptime] = useState<number>(0);
+  const logWindowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleUsageUpdate = (_event: any, usage: { cpu: number, memory: number, uptime: number }) => {
@@ -23,9 +24,15 @@ const BotLogs: React.FC<BotLogsProps> = ({ logs }) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (logWindowRef.current) {
+      logWindowRef.current.scrollTop = logWindowRef.current.scrollHeight;
+    }
+  }, [logs]);
+
   return (
     <div className="bot-logs">
-      <div className="log-window">
+      <div className="log-window" ref={logWindowRef}>
         {logs.map((log, index) => (
           <p key={index}>{log}</p>
         ))}

@@ -380,7 +380,7 @@ ipcMain.on('stop-bot', (event) => {
   if (botProcess) {
     botProcess.kill();
     botProcess = null;
-    event.sender.send('bot-log', 'Bot process stopped.');
+    event.sender.send('bot-log');
     event.sender.send('bot-usage-update', { cpu: 0, memory: 0, uptime: 0 });
     if (usageInterval) {
       clearInterval(usageInterval);
