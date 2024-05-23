@@ -30,6 +30,13 @@ const BotLogs: React.FC<BotLogsProps> = ({ logs }) => {
     }
   }, [logs]);
 
+  const formatUptime = (seconds: number) => {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = Math.floor(seconds % 60);
+    return `${h}h ${m}m ${s}s`;
+  };
+
   return (
     <div className="bot-logs">
       <div className="log-window" ref={logWindowRef}>
@@ -39,14 +46,14 @@ const BotLogs: React.FC<BotLogsProps> = ({ logs }) => {
       </div>
       <div className="bot-stats">
         <div className="stat">
-          <h3>CPU Usage</h3>
-          <p>{Math.round(cpuUsage)}%</p>
-          {/* <p>Uptime: {uptime}s</p> */}
+          <h3>CPU</h3>
+          <p>Usage : {Math.round(cpuUsage)}%</p>
+          <p>Uptime : {formatUptime(uptime)}</p>
         </div>
         <div className="stat">
-          <h3>Memory</h3>
-          <p>{Math.round(memoryUsage)} MB</p>
-          {/* <p>Uptime: {uptime}s</p> */}
+          <h3>RAM </h3>
+          <p>Usage : {Math.round(memoryUsage)} MB</p>
+          <p>Uptime : {formatUptime(uptime)}</p>
         </div>
       </div>
     </div>

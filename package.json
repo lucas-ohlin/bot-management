@@ -19,6 +19,7 @@
     "@fortawesome/free-brands-svg-icons": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "archiver": "^7.0.1",
     "discord.js": "^14.13.0",
     "pidusage": "^3.0.2",
     "react": "^18.2.0",
@@ -26,6 +27,7 @@
     "vite-tsconfig-paths": "^4.3.2"
   },
   "devDependencies": {
+    "@types/archiver": "^6.0.2",
     "@types/react": "^18.2.64",
     "@types/react-dom": "^18.2.21",
     "@typescript-eslint/eslint-plugin": "^7.1.1",

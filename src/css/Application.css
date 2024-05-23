@@ -89,3 +89,17 @@
 	opacity: 0.9;
 	font-size: 12px;
 }
+
+.select-bot-btn {
+  background-color: #232323;
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 50px;
+  height: 45px;
+  margin-left: 10px;
+  transition: background-color 0.3s;
+}
+.select-bot-btn:hover {
+  background-color: #161616;
+}

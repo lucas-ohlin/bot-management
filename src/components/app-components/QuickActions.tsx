@@ -6,10 +6,11 @@ import { faDiscord } from '@fortawesome/free-brands-svg-icons';
 interface QuickActionsProps {
   navigateTo: (url: string) => void;
   importBot: () => void;
+  exportBot: () => void;
   onSettingsClick: () => void;
 }
 
-const QuickActions: React.FC<QuickActionsProps> = ({ navigateTo, importBot, onSettingsClick }) => {
+const QuickActions: React.FC<QuickActionsProps> = ({ navigateTo, importBot, exportBot, onSettingsClick }) => {
   return (
     <div className="quick-actions-container">
       <h2 className="quick-actions-title">Quick Actions</h2>
@@ -20,7 +21,7 @@ const QuickActions: React.FC<QuickActionsProps> = ({ navigateTo, importBot, onSe
             <FontAwesomeIcon icon={faDiscord} /> Dev Portal
           </button>
           <button className="quick-action-btn" onClick={importBot}>Import Bot</button>
-          <button className="quick-action-btn">Create Bot</button>
+          <button className="quick-action-btn" onClick={exportBot}>Export Bot</button>
         </div>
         <div className="quick-actions-right">
           <button className="settings-btn" onClick={onSettingsClick}>

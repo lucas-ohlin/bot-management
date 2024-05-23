@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import fs from 'fs';
 import pidusage from 'pidusage';
+import archiver from 'archiver';
 
 const require = createRequire(import.meta.url);
 const { Client, GatewayIntentBits, Partials } = require('discord.js');
@@ -193,6 +194,7 @@ function createWindow() {
     icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
     minWidth: 700,
     minHeight: 500,
+    frame: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),
     },
@@ -203,10 +205,6 @@ function createWindow() {
   } else {
     win.loadFile(path.join(RENDERER_DIST, 'index.html'));
   }
-
-  win.webContents.on('did-finish-load', () => {
-    win?.webContents.send('main-process-message', (new Date()).toLocaleString());
-  });
 }
 
 app.whenReady().then(createWindow);
@@ -372,7 +370,7 @@ ipcMain.on('start-bot', (event, botPath, startCommand) => {
         .catch((err) => {
           console.error('Failed to get bot usage stats:', err);
         });
-    }, 2000);
+    }, 1000);
   }
 });
 
@@ -388,5 +386,71 @@ ipcMain.on('stop-bot', (event) => {
     }
   } else {
     event.sender.send('bot-log', 'No bot process is running.');
+  }
+});
+
+ipcMain.on('deploy-global', (event, botPath, globalDeployCommand) => {
+  const [command, ...args] = globalDeployCommand.split(' ');
+  const deployProcess = spawn(command, args, { cwd: botPath, stdio: ['pipe', 'pipe', 'pipe'] });
+
+  deployProcess.stdout.on('data', (data) => {
+    event.sender.send('bot-log', data.toString());
+  });
+
+  deployProcess.stderr.on('data', (data) => {
+    event.sender.send('bot-log', data.toString());
+  });
+
+  deployProcess.on('close', (code) => {
+    event.sender.send('bot-log', `Global deploy process exited with code ${code}`);
+  });
+});
+
+ipcMain.on('deploy-local', (event, botPath, localDeployCommand) => {
+  const [command, ...args] = localDeployCommand.split(' ');
+  const deployProcess = spawn(command, args, { cwd: botPath, stdio: ['pipe', 'pipe', 'pipe'] });
+
+  deployProcess.stdout.on('data', (data) => {
+    event.sender.send('bot-log', data.toString());
+  });
+
+  deployProcess.stderr.on('data', (data) => {
+    event.sender.send('bot-log', data.toString());
+  });
+
+  deployProcess.on('close', (code) => {
+    event.sender.send('bot-log', `Local deploy process exited with code ${code}`);
+  });
+});
+
+ipcMain.handle('export-bot', async (event, botPath) => {
+  const saveDialogResult = await dialog.showSaveDialog({
+    title: 'Save Bot As',
+    defaultPath: path.join(app.getPath('documents'), `${path.basename(botPath)}.zip`),
+    filters: [
+      { name: 'Zip Files', extensions: ['zip'] },
+    ],
+  });
+
+  if (!saveDialogResult.canceled && saveDialogResult.filePath) {
+    const output = fs.createWriteStream(saveDialogResult.filePath);
+    const archive = archiver('zip', { zlib: { level: 9 } });
+
+    output.on('close', () => {
+      console.log(`${archive.pointer()} total bytes`);
+      console.log('Archiver has been finalized and the output file descriptor has closed.');
+      event.sender.send('export-bot-complete', saveDialogResult.filePath);
+    });
+
+    archive.on('error', (err) => {
+      console.error('Failed to create archive:', err);
+      event.sender.send('export-bot-error', err.message);
+    });
+
+    archive.pipe(output);
+    archive.directory(botPath, false);
+    archive.finalize();
+  } else {
+    event.sender.send('export-bot-canceled');
   }
 });

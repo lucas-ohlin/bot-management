@@ -190,6 +190,18 @@ const Management: React.FC<ManagementProps> = ({ botName, botPath, onClose, onRe
     setShowSubSettings(false);
   };
 
+  const handleDeployGlobal = async () => {
+    const settings = await window.ipcRenderer.invoke('read-settings');
+    const globalDeployCommand = settings.globalDeployCommand || 'node scripts/deploy-commands.js';
+    window.ipcRenderer.send('deploy-global', botPath, globalDeployCommand);
+  };
+
+  const handleDeployLocal = async () => {
+    const settings = await window.ipcRenderer.invoke('read-settings');
+    const localDeployCommand = settings.localDeployCommand || 'node scripts/deploy-commands.js';
+    window.ipcRenderer.send('deploy-local', botPath, localDeployCommand);
+  };
+
   return (
     <div className="bot-management-view">
       {showSubSettings && <SubSettings onClose={handleCloseSubSettings} botPath={botPath} />}
@@ -221,11 +233,12 @@ const Management: React.FC<ManagementProps> = ({ botName, botPath, onClose, onRe
         </div>
       </div>
       <div className="bot-actions">
-        <button className="action-btn stop-btn" onClick={handleStartStop}>
+        <button className={`action-btn ${isRunning ? 'stop-btn' : 'start-btn'}`} onClick={handleStartStop}>
           {isRunning ? 'STOP' : 'START'}
         </button>
         <button className="action-btn edit-code-btn" onClick={handleEditCode}>EDIT CODE</button>
-        <button className="action-btn invites-btn">INVITE</button>
+        <button className="action-btn deploy-global-btn" onClick={handleDeployGlobal}>DEPLOY GLOBAL</button>
+        <button className="action-btn deploy-local-btn" onClick={handleDeployLocal}>DEPLOY LOCAL</button>
         <button className="action-btn remove-bot-btn" onClick={handleRemoveBot}>REMOVE BOT</button>
         <button className="subsettings-btn" onClick={handleOpenSubSettings}>
           <FontAwesomeIcon icon={faCog} />

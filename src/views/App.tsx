@@ -22,6 +22,7 @@ const App: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPath, setSelectedPath] = useState('');
   const [selectedBot, setSelectedBot] = useState<Application | null>(null);
+  const [selectedExportBot, setSelectedExportBot] = useState<Application | null>(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const minimizeWindow = (): void => { window.ipcRenderer.send('window-minimize') };
@@ -31,8 +32,23 @@ const App: React.FC = () => {
   const navigateTo = (url: string): void => {
     window.open(url, '_blank');
   };
+
   const importBot = () => {
     window.ipcRenderer.send('open-folder-dialog');
+  };
+
+  const exportBot = async () => {
+    if (selectedExportBot) {
+      try {
+        const zipPath = await window.ipcRenderer.invoke('export-bot', selectedExportBot.path);
+        alert(`Bot exported to ${zipPath}`);
+      } catch (error) {
+        console.error('Failed to export bot:', error);
+        alert('Failed to export bot. Please check the console for more details.');
+      }
+    } else {
+      alert('Please select a bot to export.');
+    }
   };
 
   useEffect(() => {
@@ -66,6 +82,10 @@ const App: React.FC = () => {
     setSelectedBot(app);
   };
 
+  const handleSelect = (app: Application) => {
+    setSelectedExportBot(app);
+  };
+
   const closeBotManagementView = () => {
     setSelectedBot(null);
   };
@@ -94,8 +114,8 @@ const App: React.FC = () => {
         <Settings onClose={closeSettings} />
       ) : (
         <div className="body-container">
-          <QuickActions navigateTo={navigateTo} importBot={importBot} onSettingsClick={openSettings} />
-          <ApplicationsContainer applications={applications} onManage={handleManage} />
+          <QuickActions navigateTo={navigateTo} importBot={importBot} exportBot={exportBot} onSettingsClick={openSettings} />
+          <ApplicationsContainer applications={applications} onManage={handleManage} onSelect={handleSelect} />
         </div>
       )}
     </>
