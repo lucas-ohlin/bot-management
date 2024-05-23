@@ -256,7 +256,7 @@ ipcMain.handle('read-applications', async () => {
   return readApplications();
 });
 
-ipcMain.on('write-applications', (event, applications: Application[]) => {
+ipcMain.on('write-applications', (_event, applications: Application[]) => {
   const currentApplications = readApplications();
   const currentPaths = currentApplications.map(app => app.path);
   const newPaths = applications.map(app => app.path);
@@ -277,7 +277,7 @@ ipcMain.handle('open-file-dialog', async () => {
   return result.filePaths;
 });
 
-ipcMain.on('open-ide', (event, idePath, botPath) => {
+ipcMain.on('open-ide', (_event, idePath, botPath) => {
   spawn(idePath, [botPath], { stdio: 'inherit' });
 });
 
@@ -285,16 +285,16 @@ ipcMain.handle('read-settings', async () => {
   return readSettings();
 });
 
-ipcMain.on('write-settings', (event, settings) => {
+ipcMain.on('write-settings', (_event, settings) => {
   writeSettings(settings);
 });
 
-ipcMain.handle('read-tokens', async (event, botPath: string) => {
+ipcMain.handle('read-tokens', async (_event, botPath: string) => {
   const tokens = readTokens();
   return tokens.filter(token => token.botPath === botPath);
 });
 
-ipcMain.on('write-tokens', (event, newTokens: Token[]) => {
+ipcMain.on('write-tokens', (_event, newTokens: Token[]) => {
   const allTokens = readTokens();
   newTokens.forEach(newToken => {
     const existingIndex = allTokens.findIndex(token => token.name === newToken.name && token.botPath === newToken.botPath);
@@ -307,13 +307,13 @@ ipcMain.on('write-tokens', (event, newTokens: Token[]) => {
   writeTokens(allTokens);
 });
 
-ipcMain.on('remove-token', (event, tokenToRemove: Token) => {
+ipcMain.on('remove-token', (_event, tokenToRemove: Token) => {
   const allTokens = readTokens();
   const updatedTokens = allTokens.filter(token => !(token.name === tokenToRemove.name && token.botPath === tokenToRemove.botPath));
   writeTokens(updatedTokens);
 });
 
-ipcMain.handle('bot-stats', async (event, token: string) => {
+ipcMain.handle('bot-stats', async (_event, token: string) => {
   try {
     console.log(token);
     const stats = await getBotStatistics(token);
@@ -323,11 +323,11 @@ ipcMain.handle('bot-stats', async (event, token: string) => {
   }
 });
 
-ipcMain.handle('read-bot-stats', async (event, botPath: string) => {
+ipcMain.handle('read-bot-stats', async (_event, botPath: string) => {
   return readBotStatistics(botPath);
 });
 
-ipcMain.on('write-bot-stats', (event, botPath: string, stats: BotStatistics) => {
+ipcMain.on('write-bot-stats', (_event, botPath: string, stats: BotStatistics) => {
   writeBotStatistics(botPath, stats);
 });
 
@@ -434,7 +434,7 @@ ipcMain.handle('export-bot', async (event, botPath) => {
 
   if (!saveDialogResult.canceled && saveDialogResult.filePath) {
     const output = fs.createWriteStream(saveDialogResult.filePath);
-    const archive = archiver('zip', { zlib: { level: 9 } });
+    const archive = archiver('zip', { zlib: { level: 9 } }); 
 
     output.on('close', () => {
       console.log(`${archive.pointer()} total bytes`);
@@ -448,7 +448,7 @@ ipcMain.handle('export-bot', async (event, botPath) => {
     });
 
     archive.pipe(output);
-    archive.directory(botPath, false);
+    archive.directory(botPath, path.basename(botPath)); 
     archive.finalize();
   } else {
     event.sender.send('export-bot-canceled');
