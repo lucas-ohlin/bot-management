@@ -145,3 +145,23 @@ input {
 .popup-btn:hover {
   background-color: #5a7cc2;
 }
+
+.subsettings-btn {
+  background-color: #333;
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.settings-btn:hover {
+  color: #aaa;
+  background-color: red;
+}
+
+.settings-input {
+  max-width: 500px;
+  background-color:#232323;
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+}

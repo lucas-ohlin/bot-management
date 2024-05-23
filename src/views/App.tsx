@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import Frame from '../components/Frame';
-import ApplicationsContainer from '../components/Application';
-import QuickActions from '../components/QuickActions';
-import Modal from '../components/Modal';
+import Frame from '../components/app-components/Frame';
+import Modal from '../components/app-components/Modal';
+import ApplicationsContainer from '../components/app-components/Application';
 import Management from './Management';
 import Settings from './Settings';
+import QuickActions from '../components/app-components/QuickActions';
 
 import '../css/App.css';
 import '../css/Frame.css';
@@ -63,7 +63,6 @@ const App: React.FC = () => {
   };
 
   const handleManage = (app: Application) => {
-    console.log("handleManage called with app:", app);
     setSelectedBot(app);
   };
 
@@ -79,16 +78,18 @@ const App: React.FC = () => {
     setIsSettingsOpen(false);
   };
 
+  const removeBot = (botPath: string) => {
+    const newApps = applications.filter(app => app.path !== botPath);
+    setApplications(newApps);
+    window.ipcRenderer.send('write-applications', newApps);
+  };
+
   return (
     <>
       <Frame minimizeWindow={minimizeWindow} maximizeWindow={maximizeWindow} closeWindow={closeWindow} />
       {isModalOpen && <Modal onSave={saveApplication} />}
       {selectedBot ? (
-        <Management
-          botName={selectedBot.name}
-          botPath={selectedBot.path}
-          onClose={closeBotManagementView}
-        />
+        <Management botName={selectedBot.name} botPath={selectedBot.path} onClose={closeBotManagementView} onRemoveBot={removeBot} />
       ) : isSettingsOpen ? (
         <Settings onClose={closeSettings} />
       ) : (

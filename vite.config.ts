@@ -28,4 +28,7 @@ export default defineConfig({
         : {},
     }),
   ],
+  optimizeDeps: {
+    include: ['discord.js'], 
+  },
 })

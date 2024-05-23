@@ -10,7 +10,7 @@ const Frame: React.FC<FrameProps> = ({ minimizeWindow, maximizeWindow, closeWind
   return (
     <div className="green-frame">
       <div className="title-left">
-        <div className="profile-circle"></div>
+        {/* <div className="profile-circle"></div> */}
         <p>bot-management v0.0.1</p>
       </div>
       <div className="title-right">

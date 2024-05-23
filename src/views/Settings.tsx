@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faCode, faAtom, faBrain, faLemon } from '@fortawesome/free-solid-svg-icons';
 import { faPython, faJs } from '@fortawesome/free-brands-svg-icons';
+
 import '../css/Settings.css';
 
 interface SettingsProps {
@@ -21,7 +22,7 @@ const ideIcons = {
 const getIDEIcon = (idePath: string | null): { icon: any, name: string } => {
   if (!idePath) return { icon: null, name: '' };
 
-  // Love If statements !!
+  // I love If statements !!
   const ide = idePath.toLowerCase();
   if (ide.includes('code.exe')) return { icon: ideIcons.vscode, name: 'Visual Studio Code' };
   if (ide.includes('devenv.exe')) return { icon: ideIcons.vscode, name: 'Visual Studio' };
@@ -87,7 +88,7 @@ const Settings: React.FC<SettingsProps> = ({ onClose }) => {
       </div>
       <div className="settings-content">
         <div className="settings-card">
-          <label htmlFor="ide-selector">Default Code Editor:</label>
+          <label className="ide-selector">Default Code Editor:</label>
           <div className="ide-info">
             {ideInfo.icon && <FontAwesomeIcon icon={ideInfo.icon} size="2x" />}
             <div className="ide-details">
@@ -98,7 +99,7 @@ const Settings: React.FC<SettingsProps> = ({ onClose }) => {
           <button className="select-btn" onClick={handleSelectIDE}>Select IDE</button>
         </div>
         <div className="settings-card">
-          <label htmlFor="other-setting">Test:</label>
+          <label className="other-setting">Test:</label>
           <div className="ide-info">
             <div className="ide-details">
               <span>Just to check</span>
