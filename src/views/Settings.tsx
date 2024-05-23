@@ -98,15 +98,6 @@ const Settings: React.FC<SettingsProps> = ({ onClose }) => {
           </div>
           <button className="select-btn" onClick={handleSelectIDE}>Select IDE</button>
         </div>
-        <div className="settings-card">
-          <label className="other-setting">Test:</label>
-          <div className="ide-info">
-            <div className="ide-details">
-              <span>Just to check</span>
-              <span className="ide-path">How it looks with other settings</span>
-            </div>
-          </div>
-        </div>
         <button className="save-btn" onClick={handleSave}>Save</button>
       </div>
       {showConfirmation && (

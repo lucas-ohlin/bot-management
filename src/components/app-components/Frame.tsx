@@ -10,7 +10,7 @@ const Frame: React.FC<FrameProps> = ({ minimizeWindow, maximizeWindow, closeWind
   return (
     <div className="green-frame">
       <div className="title-left">
-        <p>bot-management v0.1.2</p>
+        <p>bot-management v0.1.3</p>
       </div>
       <div className="title-right">
         <button onClick={minimizeWindow} title="Minimize" id="title-btn-1"><i className="fa-solid fa-compress"></i></button>
